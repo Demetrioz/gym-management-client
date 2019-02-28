@@ -1,0 +1,63 @@
+
+/* Flex Styles */
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+}
+
+.flexAround {
+    display: flex;
+    justify-content: space-around;
+}
+
+.flexEnd {
+    display: flex;
+    justify-content: flex-end;
+
+}
+
+/* Margin Styles */
+
+.margin1 {
+    margin: 1%;
+}
+
+.margin2 {
+    margin: 2%;
+}
+
+.margin3 {
+    margin: 3%;
+}
+
+.margin5 {
+    margin: 5%;
+}
+
+.marginHAuto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Padding Styles */
+
+.padding1 {
+    padding: 1%;
+}
+
+/* Width Styles */
+
+.width70 {
+    width: 70%;
+}

@@ -1,0 +1,12 @@
+.base {
+
+}
+
+.image {
+    position: absolute;
+    top: 80px;
+}
+
+.clickable {
+    cursor: pointer;
+}

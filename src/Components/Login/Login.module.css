@@ -1,0 +1,35 @@
+.base {
+    width: 600px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #8C8C8C;
+    border-radius: 15px;
+    margin: 7% auto;
+}
+
+.baseTablet {
+    width: 400px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #8C8C8C;
+    border-radius: 15px;
+    margin: 8% auto;
+}
+
+.basePhone {
+    width: 80%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #8C8C8C;
+    border-radius: 15px;
+    margin: 3% auto;
+}
+
+.button {
+    margin-right: 5%;
+    margin-bottom: 5%;
+}
+
+.logo {
+    margin-top: 5%;
+}

@@ -1,0 +1,78 @@
+.base {
+
+}
+
+.classSchedule {
+    width: 70%;
+    height: 80%;
+    display: grid;
+    justify-items: stretch;
+    align-items: stretch;
+    justify-content: stretch;
+    align-content: stretch;
+    grid-template-columns: 70px 130px 130px 130px 130px 130px 130px 130px;
+    grid-column-gap: 5px;
+    grid-template-rows: repeat(31, 25px);
+    grid-template-areas: 
+        "header header header header header header header header"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule"
+        "sidebar schedule schedule schedule schedule schedule schedule schedule";
+
+}
+
+.weekDays {
+    grid-area: header;
+    margin-left: 70px;
+    /* background-color: blue; */
+}
+
+.singleDay {
+    width: 130px;
+    text-align: center;
+    padding-left: 5px;
+}
+
+.times {
+    grid-area: sidebar;
+    /* background-color: green; */
+}
+
+.singleTime {
+    height: 25px;
+    text-align: end;
+    padding-right: 5px;
+}
+
+.schedule {
+    grid-area: schedule;
+    background-color: red;
+}
