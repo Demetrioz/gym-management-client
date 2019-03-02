@@ -13,6 +13,7 @@
     grid-template-columns: 70px 130px 130px 130px 130px 130px 130px 130px;
     grid-column-gap: 5px;
     grid-template-rows: repeat(31, 25px);
+    /* grid-row-gap: 5px; */
     grid-template-areas: 
         "header header header header header header header header"
         "sidebar schedule schedule schedule schedule schedule schedule schedule"
@@ -63,6 +64,7 @@
 
 .times {
     grid-area: sidebar;
+    padding-top: 15px;
     /* background-color: green; */
 }
 
@@ -74,5 +76,15 @@
 
 .schedule {
     grid-area: schedule;
-    background-color: red;
+    /* background-color: red; */
+    border: 1px solid black;
+
+    background: repeating-linear-gradient(  
+        to bottom,
+        #D4D4D4,
+        #D4D4D4 25px,
+        #A9A9A9 25px,
+        #A9A9A9 50px
+    );
+    background-size: 100%, 100%;
 }

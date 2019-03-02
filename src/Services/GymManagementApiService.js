@@ -86,6 +86,18 @@ class GymManagementApiService {
         let filter = '';
         return await this.request('Interest', null, 'GET');
     }
+
+    // Type Methods
+
+    static async getTypesByCategory(category) {
+        return await this.request(`Types/${category}`, null, 'GET');
+    }
+
+    // Class Methods
+
+    static async getClassInstances() {
+        return await this.request('Class', null, 'GET');
+    }
 }
 
 export default GymManagementApiService;
