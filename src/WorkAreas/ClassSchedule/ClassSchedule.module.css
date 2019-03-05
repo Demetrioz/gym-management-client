@@ -88,3 +88,7 @@
     );
     background-size: 100%, 100%;
 }
+
+.classButton {
+    margin-top: 25px;
+}

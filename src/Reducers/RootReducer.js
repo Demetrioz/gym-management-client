@@ -4,6 +4,7 @@ import ContactReducer from 'Reducers/ContactReducer';
 import ModalReducer from 'Reducers/ModalReducer';
 import FormReducer from 'Reducers/FormReducer';
 import NotificationReducer from 'Reducers/NotificationReducer';
+import ClassReducer from 'Reducers/ClassReducer';
 
 const RootReducer = (state = 0, action) => {
     let newState = {
@@ -13,6 +14,7 @@ const RootReducer = (state = 0, action) => {
         modals: ModalReducer(state.modals, action),
         forms: FormReducer(state.forms, action),
         notifications: NotificationReducer(state.notifications, action),
+        classes: ClassReducer(state.classes, action),
     }
 
     console.log(action);

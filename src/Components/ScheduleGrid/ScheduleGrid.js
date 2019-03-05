@@ -9,10 +9,18 @@ import '../../../node_modules/react-resizable/css/styles.css';
 
 class ScheduleGrid extends Component {
 
-    createLayout() {
-        return [
+    constructor(props) {
+        super(props);
 
-        ];
+        this.createLayout = this.createLayout.bind(this);
+    }
+
+    createLayout() {
+        let layout = [];
+        
+        this.props.classes.classInstances.forEach(classInstance => {
+
+        })
     }
 
     render() {
@@ -60,4 +68,10 @@ class ScheduleGrid extends Component {
     }
 }
 
-export default connect(null, null)(ScheduleGrid);
+function mapStateToProps(state) {
+    return {
+        classes: state.classes,
+    }
+}
+
+export default connect(mapStateToProps, null)(ScheduleGrid);

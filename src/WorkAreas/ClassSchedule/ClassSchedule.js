@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
+import ContainedButton from 'Components/ContainedButton/ContainedButton';
 import ScheduleGrid from 'Components/ScheduleGrid/ScheduleGrid';
 
 import NotificationActions from 'Actions/NotificationActions';
 
 import GymManagementApiService from 'Services/GymManagementApiService';
 
+import Add from '@material-ui/icons/Add';
+
 import Style from './ClassSchedule.module.css';
 import Common from 'Styles/Common.module.css';
 
 class ClassSchedule extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.createClassButtons = this.createClassButtons.bind(this);
+    }
 
     createTimes() {
 
@@ -34,6 +44,24 @@ class ClassSchedule extends Component {
         return timeArray;
     }
 
+    createClassButtons() {
+        return this.props.classes.classTypes.map((classType, i) => {
+            return (
+                <ContainedButton 
+                    key={i}
+                    className={Style.classButton}
+                    label={classType.label}
+                    icon={<Add />}
+                    onClick={this.addClassToSchedule.bind(this, classType.typeId)}
+                />
+            )
+        });
+    }
+
+    addClassToSchedule(classType) {
+        console.log("adding ", classType);
+    }
+
     async componentDidMount() {
         this.props.dispatch(NotificationActions.addNotification(
             'Loading...',
@@ -47,6 +75,19 @@ class ClassSchedule extends Component {
 
             let classTypes = await classTypeRequest;
             let classInstances = await classInstanceRequest;
+
+            this.props.dispatch({
+                type: 'SET_CLASS_DATA',
+                property: 'classTypes',
+                data: classTypes
+            });
+
+            this.props.dispatch({
+                type: 'SET_CLASS_DATA',
+                property: 'classInstances',
+                data: classInstances
+            });
+
         }
         catch(error) {
             // TODO: Error Modal
@@ -62,6 +103,7 @@ class ClassSchedule extends Component {
     render() {
 
         let times = this.createTimes();
+        let availableClassButtons = this.createClassButtons();
 
         return (
             <div id='container' className={Common.flexRow}>
@@ -82,12 +124,18 @@ class ClassSchedule extends Component {
                         <ScheduleGrid />
                     </div>
                 </div>
-                <div id='class_schedule_classes'>
-                    My list of classes is here
+                <div id='class_schedule_classes' className={Common.flexColumn}>
+                    {availableClassButtons}
                 </div>
             </div>
         )
     }
 }
 
-export default ClassSchedule;
+function mapStateToProps(state) {
+    return {
+        classes: state.classes,
+    }
+}
+
+export default connect(mapStateToProps, null)(ClassSchedule);

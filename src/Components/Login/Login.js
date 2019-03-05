@@ -25,17 +25,11 @@ class Login extends Component {
             // TODO: Load different routes based on authenticated user
             //      Home/Dashboard for admin, Member portal for user
             //      Class login screen for service account
-
-            try {
-                history.replace(route);
-            }
-            catch(error) {
-                console.log("Error: ", error);
-            }
-
+            
+            history.replace(route);
         }
         catch(error) {
-
+            console.log("Error: ", error);
         }
     }
     
