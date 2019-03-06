@@ -98,6 +98,12 @@ class GymManagementApiService {
     static async getClassInstances() {
         return await this.request('Class', null, 'GET');
     }
+
+    // Class Schedule Methods
+
+    static async getClassSchedules() {
+        return await this.request('ClassSchedule', null, 'GET');
+    }
 }
 
 export default GymManagementApiService;

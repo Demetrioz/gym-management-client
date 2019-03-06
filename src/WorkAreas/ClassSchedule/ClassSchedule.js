@@ -71,10 +71,10 @@ class ClassSchedule extends Component {
 
         try {
             let classTypeRequest = GymManagementApiService.getTypesByCategory('class');
-            let classInstanceRequest = GymManagementApiService.getClassInstances();
+            //let classInstanceRequest = GymManagementApiService.getClassInstances();
 
             let classTypes = await classTypeRequest;
-            let classInstances = await classInstanceRequest;
+            //let classInstances = await classInstanceRequest;
 
             this.props.dispatch({
                 type: 'SET_CLASS_DATA',
@@ -82,11 +82,11 @@ class ClassSchedule extends Component {
                 data: classTypes
             });
 
-            this.props.dispatch({
-                type: 'SET_CLASS_DATA',
-                property: 'classInstances',
-                data: classInstances
-            });
+            // this.props.dispatch({
+            //     type: 'SET_CLASS_DATA',
+            //     property: 'classInstances',
+            //     data: classInstances
+            // });
 
         }
         catch(error) {
@@ -94,7 +94,6 @@ class ClassSchedule extends Component {
             console.log("Error loading classes:", error);
         }
         finally {
-
             this.props.dispatch(NotificationActions.removeNotification(
                 'class_loading_notificaiton'));
         }

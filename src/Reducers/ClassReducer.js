@@ -4,6 +4,7 @@ const defaultState = () => {
     return {
         classTypes: [],
         classInstances: [],
+        classSchedules: [],
     }
 }
 
