@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import Enumerable from 'linq';
 
 import GridLayout from'react-grid-layout';
 
 import NotificationActions from 'Actions/NotificationActions';
+
+import ClassUtility from 'Utilities/ClassUtility';
 
 import GymManagementApiService from 'Services/GymManagementApiService';
 
@@ -20,16 +21,6 @@ class ScheduleGrid extends Component {
 
         this.createLayout = this.createLayout.bind(this);
 
-        this.xPositionMap = {
-            'Sunday': 0,
-            'Monday': 1,
-            'Tuesday': 2,
-            'Wednesday': 3,
-            'Thursday': 4,
-            'Friday': 5,
-            'Saturday:': 6,
-        }
-
         this.classColorMap = {
             'krav_maga_1': Style.krav1,
             'krav_maga_2': Style.krav2,
@@ -38,28 +29,6 @@ class ScheduleGrid extends Component {
             'mitt_work': Style.mittWork,
             'cardio_kickboxing': Style.kickboxing,
         }
-    }
-
-    calculateYPosition(time) {
-
-        // 5:00 = 0, increase 2 for each hour, increase 1 if 30 minutes
-        let y = 0;
-
-        let hours = moment(time).hours();
-        let minutes = moment(time).minutes();
-
-        y = y + ((hours - 5) * 2)
-        y = y + (minutes / 30)
-
-        return y;
-    }
-
-    calculateHeight(beginTime, endTime) {
-
-        // Height increases 1 for every 30 minutes
-        let begin = moment(beginTime);
-        let end = moment(endTime);
-        return (end.diff(begin, 'minutes') / 30);
     }
 
     createLayout() {
@@ -75,10 +44,10 @@ class ScheduleGrid extends Component {
 
                 layout.push({
                     i: `${classSchedule.classScheduleId}`,
-                    x: this.xPositionMap[classSchedule.day],
-                    y: this.calculateYPosition(classSchedule.beginTime),
+                    x: ClassUtility.xPositionMap[classSchedule.day],
+                    y: ClassUtility.calculateScheduleYPosition(classSchedule.beginTime),
                     w: 1,
-                    h: this.calculateHeight(classSchedule.beginTime, classSchedule.endTime),
+                    h: ClassUtility.calculateScheduleHeight(classSchedule.beginTime, classSchedule.endTime),
                     maxW: 1,
                     // Custom addition for background color and text
                     classType: classType.name,
@@ -113,9 +82,7 @@ class ScheduleGrid extends Component {
         ));
 
         try {
-            let classScheduleRequest = GymManagementApiService.getClassSchedules();
-
-            let classSchedules = await classScheduleRequest;
+            let classSchedules = await GymManagementApiService.getClassSchedules();
 
             this.props.dispatch({
                 type: 'SET_CLASS_DATA',

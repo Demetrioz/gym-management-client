@@ -22,16 +22,10 @@ class GymManagementApiService {
 
         console.log("url / options:", url, options);
 
-        try{
-            let response = await fetch(url, options);
-            response = await response.json();
-            console.log("response:", response);
-            return response;
-        }
-        catch(error) {
-            return error;
-        }
-
+        let response = await fetch(url, options);
+        response = await response.json();
+        console.log("response:", response);
+        return response;
     }
 
     // Setup Methods
@@ -103,6 +97,10 @@ class GymManagementApiService {
 
     static async getClassSchedules() {
         return await this.request('ClassSchedule', null, 'GET');
+    }
+
+    static async createClassSchedule(schedule) {
+        return await this.request('ClassSchedule', schedule, 'POST');
     }
 }
 

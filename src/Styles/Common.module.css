@@ -27,6 +27,8 @@
 
 }
 
+
+
 /* Margin Styles */
 
 .margin1 {
@@ -48,6 +50,14 @@
 .marginHAuto {
     margin-left: auto;
     margin-right: auto;
+}
+
+.marginTopAuto {
+    margin-top: auto;
+}
+
+.marginLeftAuto {
+    margin-left: auto;
 }
 
 /* Padding Styles */

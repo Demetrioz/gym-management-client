@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import ContainedButton from 'Components/ContainedButton/ContainedButton';
 import ScheduleGrid from 'Components/ScheduleGrid/ScheduleGrid';
+import FloatingButton from 'Components/FloatingButton/FloatingButton';
 
 import NotificationActions from 'Actions/NotificationActions';
+
+import ClassUtility from 'Utilities/ClassUtility';
 
 import GymManagementApiService from 'Services/GymManagementApiService';
 
@@ -19,6 +23,7 @@ class ClassSchedule extends Component {
         super(props);
 
         this.createClassButtons = this.createClassButtons.bind(this);
+        this.addClassToSchedule = this.addClassToSchedule.bind(this);
     }
 
     createTimes() {
@@ -58,8 +63,45 @@ class ClassSchedule extends Component {
         });
     }
 
-    addClassToSchedule(classType) {
+    async addClassToSchedule(classType) {
         console.log("adding ", classType);
+
+        this.props.dispatch(NotificationActions.addNotification(
+            'Loading...',
+            'Creating Classes',
+            'class_loading_notification'
+        ));
+
+        try {
+            // TODO: Check schedule for first available position
+            //let classTime = ClassUtility.getFirstAvailableTime(this.props.classes.classSchedules);
+
+            // Add a new class schedule
+            let newSchedule = {
+                ClassTypeId: classType,
+                Day: 'Sunday',
+                BeginTime: '05:00:00',
+                EndTime: '05:30:00',
+            }
+
+            let scheduleResult = await GymManagementApiService.createClassSchedule(newSchedule);
+
+            console.log("results:", scheduleResult);
+
+            // Add result to state so it's displayed on the schedule grid
+
+        }
+        catch(error) {
+
+        }
+        finally {
+            this.props.dispatch(NotificationActions.removeNotification(
+                'class_loading_notificaiton'));
+        }
+    }
+
+    handleSave() {
+
     }
 
     async componentDidMount() {
@@ -70,23 +112,13 @@ class ClassSchedule extends Component {
         ));
 
         try {
-            let classTypeRequest = GymManagementApiService.getTypesByCategory('class');
-            //let classInstanceRequest = GymManagementApiService.getClassInstances();
-
-            let classTypes = await classTypeRequest;
-            //let classInstances = await classInstanceRequest;
+            let classTypes = await GymManagementApiService.getTypesByCategory('class');
 
             this.props.dispatch({
                 type: 'SET_CLASS_DATA',
                 property: 'classTypes',
                 data: classTypes
             });
-
-            // this.props.dispatch({
-            //     type: 'SET_CLASS_DATA',
-            //     property: 'classInstances',
-            //     data: classInstances
-            // });
 
         }
         catch(error) {
@@ -125,6 +157,12 @@ class ClassSchedule extends Component {
                 </div>
                 <div id='class_schedule_classes' className={Common.flexColumn}>
                     {availableClassButtons}
+                    <div className={`${Common.marginLeftAuto} ${Common.marginTopAuto}`}>
+                        <FloatingButton 
+                            label='Save Changes'
+                            onClick={this.handleSave}
+                        />
+                    </div>
                 </div>
             </div>
         )
