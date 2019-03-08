@@ -64,7 +64,6 @@ class ClassSchedule extends Component {
     }
 
     async addClassToSchedule(classType) {
-        console.log("adding ", classType);
 
         this.props.dispatch(NotificationActions.addNotification(
             'Loading...',
@@ -73,26 +72,27 @@ class ClassSchedule extends Component {
         ));
 
         try {
-            // TODO: Check schedule for first available position
-            //let classTime = ClassUtility.getFirstAvailableTime(this.props.classes.classSchedules);
+            let classTime = ClassUtility.getFirstAvailableTime(this.props.classes.classSchedules);
 
             // Add a new class schedule
             let newSchedule = {
                 ClassTypeId: classType,
-                Day: 'Sunday',
-                BeginTime: '05:00:00',
-                EndTime: '05:30:00',
+                Day: classTime.day,
+                BeginTime: classTime.start,
+                EndTime: classTime.end,
             }
 
             let scheduleResult = await GymManagementApiService.createClassSchedule(newSchedule);
 
-            console.log("results:", scheduleResult);
-
             // Add result to state so it's displayed on the schedule grid
-
+            this.props.dispatch({
+                type: 'PUSH_CLASS_DATA',
+                property: 'classSchedules',
+                data: [scheduleResult]
+            });
         }
         catch(error) {
-
+            console.log("Error:", error);
         }
         finally {
             this.props.dispatch(NotificationActions.removeNotification(

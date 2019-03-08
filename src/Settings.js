@@ -5,6 +5,11 @@ class Settings {
     static maxTabletWidth = 1224;
     static maxPhoneWidth = 420;
 
+    // Schedule settings
+    static classScheduleInterval = 30;
+    static classScheduleIntervalCount = 30;
+    static classScheduleStart = "05:00";
+
     // 
     static getApiUrl() {
 
