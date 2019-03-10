@@ -13,7 +13,7 @@ class ClassUtility {
         'Monday': 1,
         1: 'Monday',
         'Tuesday': 2,
-        2: 'Tuessday',
+        2: 'Tuesday',
         'Wednesday': 3,
         3: 'Wednesday',
         'Thursday': 4,
@@ -75,21 +75,16 @@ class ClassUtility {
 
             takenYPositions.sort(Utility.sortNumber);
 
-            // console.log("taken positions:", takenYPositions);
-
             // Iterate through all possible class times and return the first available
             for(let y = 0; y < Settings.classScheduleIntervalCount; y++) {
                 if(takenYPositions[y] !== y) {
 
-                    // console.log("y:", y);
                     available.day = ClassUtility.xPositionMap[day];
 
                     // 0 = 5:00, add :30 for every 1, 01:00 for every 2
                     let hour = Settings.classScheduleStart.substring(0,2);
                     let minute = Settings.classScheduleStart.substring(3);
 
-                    // console.log("hour:", hour);
-                    // console.log("minute:", minute);
                     let numericHour = parseInt(hour);
                     let numericMinute = parseInt(minute);
 
@@ -104,11 +99,6 @@ class ClassUtility {
                             ? 0
                             : 30;
                     }
-
-                    // console.log("hourOffset:", hourOffset);
-                    // console.log("minuteOffset:", minuteOffset);
-
-                    // console.log("numeric times:", numericHour, numericMinute);
 
                     hour = numericHour < 10
                         ? `0${numericHour}`
@@ -141,6 +131,66 @@ class ClassUtility {
         }
 
         return available;
+    }
+
+    static calculateDay(xPosition) {
+        let day = null;
+
+        if(xPosition === Settings.dayStart)
+            day = 0;
+        else
+            day = Math.ceil((xPosition - Settings.dayStart) / Settings.dayMultiple);
+
+        return this.xPositionMap[day];
+    }
+
+    static calculateBegin(yPosition) {
+        let offset = null;
+
+        if(yPosition === Settings.timeStart)
+            offset = 0;
+        else
+            offset = Math.ceil((yPosition - Settings.timeStart) / Settings.timeMultiple);
+
+        // 0 = 5:00, add :30 for every 1, 01:00 for every 2
+        let hour = Settings.classScheduleStart.substring(0,2);
+        let minute = Settings.classScheduleStart.substring(3);
+
+        let numericHour = parseInt(hour);
+        let numericMinute = parseInt(minute);
+
+        let hourOffset = Math.floor(offset / 2);
+        for(let i = 0; i < hourOffset; i++) {
+            numericHour += 1;
+        }
+
+        let minuteOffset = offset % 2;
+        for(let i = 0; i < minuteOffset; i++) {
+            numericMinute = numericMinute === 30
+                ? 0
+                : 30;
+        }
+
+        hour = numericHour < 10
+            ? `0${numericHour}`
+            : `${numericHour}`;
+
+        minute = numericMinute < 10
+            ? `0${numericMinute}`
+            : `${numericMinute}`;
+
+        return `${hour}:${minute}`;
+    }
+
+    static calculateDuration(height) {
+        let duration = null;
+
+        if(height === Settings.initialHeight)
+            duration = 1;
+        else
+            duration = 1 + Math.ceil((height - Settings.initialHeight) / Settings.regularHeight);
+
+        return duration;
     }
 }
 

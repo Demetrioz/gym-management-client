@@ -64,13 +64,15 @@ class ScheduleGrid extends Component {
 
             return (
                 <div 
+                    id={layoutObject.i}
+                    ref={`classSchedule_${layoutObject.i}`}
                     className={this.classColorMap[layoutObject.classType]}
                     key={layoutObject.i}
                 >
                     {layoutObject.classLabel}
                 </div>
             )
-        })
+        });
     }
 
     async componentDidMount() {
@@ -97,6 +99,16 @@ class ScheduleGrid extends Component {
         finally {
             this.props.dispatch(NotificationActions.removeNotification(
                 'class_loading_notificaiton'));
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if(this.refs.length !== prevProps.classes.classSchedules.length) {
+            this.props.dispatch({
+                type: 'SET_CLASS_DATA',
+                property: 'layout',
+                data: this.refs
+            });
         }
     }
 

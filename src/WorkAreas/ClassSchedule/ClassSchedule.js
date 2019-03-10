@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
+import Enumerable from 'linq';
 
 import ContainedButton from 'Components/ContainedButton/ContainedButton';
 import ScheduleGrid from 'Components/ScheduleGrid/ScheduleGrid';
@@ -24,6 +24,7 @@ class ClassSchedule extends Component {
 
         this.createClassButtons = this.createClassButtons.bind(this);
         this.addClassToSchedule = this.addClassToSchedule.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     createTimes() {
@@ -100,8 +101,117 @@ class ClassSchedule extends Component {
         }
     }
 
-    handleSave() {
+    async handleSave() {
 
+        this.props.dispatch(NotificationActions.addNotification(
+            'Loading...',
+            'Saving Classes',
+            'class_saving_notification'
+        ));
+
+        try {
+
+            let updatedSchedules = [];
+
+            // Loop through all divs created by ScheduleGrid
+            Object.entries(this.props.classes.layout).forEach(entry => {
+
+                // Get the Id (ClassScheduleId)
+                let id = parseInt(entry[1].id);
+
+                // Get translate(x, y) to determine the time
+                // find (xxxpx,) but don't include ( or px,)
+                // find px, xxxpx) but don't include px,  or )
+                let xRegex = /(?<=\().+(?=px,)/g
+                let yRegex = /(?<=px, ).+(?=px\))/g
+                let x = parseInt(entry[1].style.cssText.match(xRegex));
+                let y = parseInt(entry[1].style.cssText.match(yRegex));
+                
+                // Get the height to determine duration
+                let heightRegex = /(?<=height: ).+(?=px;)/g
+                let height = parseInt(entry[1].style.cssText.match(heightRegex));
+
+                // Calculate Day, Hour, and duration
+                let day = ClassUtility.calculateDay(x);
+                let beginTime = ClassUtility.calculateBegin(y);
+                let duration = ClassUtility.calculateDuration(height);
+
+                let hour = beginTime.substring(0,2);
+                let minute = beginTime.substring(3);
+
+                let numericHour = parseInt(hour);
+                let numericMinute = parseInt(minute);
+
+                for(let i = 0; i < duration; i++) {
+                    if(i % 2 === 0) {
+                        numericMinute = numericMinute === 30
+                            ? 0
+                            : 30;
+                        
+                        numericHour = numericMinute === 0
+                            ? numericHour + 1
+                            : numericHour;
+                    }
+                    else {
+                        numericMinute = numericMinute === 30
+                            ? 0
+                            : 30;
+
+                        numericHour = numericMinute === 0
+                            ? numericHour + 1
+                            : numericHour;
+                    }
+                }
+
+                hour = numericHour < 10
+                ? `0${numericHour}`
+                : `${numericHour}`;
+
+                minute = numericMinute < 10
+                    ? `0${numericMinute}`
+                    : `${numericMinute}`;
+
+                let endTime = `${hour}:${minute}`;
+
+                let schedule = Enumerable
+                    .from(this.props.classes.classSchedules)
+                    .where(schedule => schedule.classScheduleId === id)
+                    .firstOrDefault();
+
+                // TODO: Need to send just the updated info, not recreate the 
+                // entire object
+                
+                // Build the schedule object
+                let newSchedule = {
+                    ClassScheduleId: schedule.classScheduleId,
+                    ClassTypeId: schedule.classTypeId,
+                    Day: day,
+                    BeginTime: beginTime,
+                    EndTime: endTime,
+                    Created: schedule.created,
+                    IsDeleted: schedule.IsDeleted,
+                }
+
+                updatedSchedules.push(newSchedule);
+            });
+            
+            // Update the database
+            let updates = await GymManagementApiService.updateClassSchedule(updatedSchedules);
+
+            // Save updates to state
+            this.props.dispatch({
+                type: 'SET_CLASS_DATA',
+                propertY: 'classSchedules',
+                data: updates
+            });
+        }
+        catch(error) {
+            console.log("Error:", error);
+        }
+        finally {
+            this.props.dispatch(NotificationActions.removeNotification(
+                'class_saving_notificaiton'));
+        }
     }
 
     async componentDidMount() {
@@ -132,7 +242,6 @@ class ClassSchedule extends Component {
     }
 
     render() {
-
         let times = this.createTimes();
         let availableClassButtons = this.createClassButtons();
 
@@ -155,7 +264,7 @@ class ClassSchedule extends Component {
                         <ScheduleGrid />
                     </div>
                 </div>
-                <div id='class_schedule_classes' className={Common.flexColumn}>
+                <div id='class_schedule_classes' className={`${Common.flexColumn} ${Common.marginLeft5}`}>
                     {availableClassButtons}
                     <div className={`${Common.marginLeftAuto} ${Common.marginTopAuto}`}>
                         <FloatingButton 

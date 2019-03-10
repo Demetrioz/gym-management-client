@@ -29,6 +29,7 @@ import DashboardWorkArea from 'WorkAreas/Dashboard/Dashboard';
 import EmailWorkArea from 'WorkAreas/Email/Email';
 import MemberInformation from 'WorkAreas/MemberInformation/MemberInformation';
 import LeadInformation from 'WorkAreas/LeadInformation/LeadInformation';
+import Classes from 'WorkAreas/Classes/Classes';
 import ClassSchedule from 'WorkAreas/ClassSchedule/ClassSchedule';
 
 import Style from './NavigationDrawer.module.css';
@@ -63,6 +64,7 @@ class NavigationDrawer extends Component {
             email: EmailWorkArea,
             member: MemberInformation,
             lead: LeadInformation,
+            classes: Classes,
             class_schedule: ClassSchedule,
         };
 
@@ -142,11 +144,17 @@ class NavigationDrawer extends Component {
                     {/* Schedule Collapse Panel */}
                     <Collapse in={this.state.schedule} timeout='auto' unmountOnExit>
                         <List component='div' disablePadding>
-                            <ListItem button onClick={() => this.handleClick('class_schedule', false)}>
+                            <ListItem button onClick={() => this.handleClick('classes', false)}>
                                 <ListItemIcon>
                                     <Class />
                                 </ListItemIcon>
-                                <ListItemText inset primary='Class Schedule'/>
+                                <ListItemText inset primary='Classes' />
+                            </ListItem>
+                            <ListItem button onClick={() => this.handleClick('class_schedule', false)}>
+                                <ListItemIcon>
+                                    <Schedule />
+                                </ListItemIcon>
+                                <ListItemText inset primary='Class Schedule' />
                             </ListItem>
                         </List>
                     </Collapse>

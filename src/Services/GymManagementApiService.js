@@ -102,6 +102,10 @@ class GymManagementApiService {
     static async createClassSchedule(schedule) {
         return await this.request('ClassSchedule', schedule, 'POST');
     }
+
+    static async updateClassSchedule(schedule) {
+        return await this.request('ClassSchedule', schedule, 'PATCH');
+    }
 }
 
 export default GymManagementApiService;

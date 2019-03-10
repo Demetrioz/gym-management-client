@@ -27,8 +27,6 @@
 
 }
 
-
-
 /* Margin Styles */
 
 .margin1 {
@@ -45,6 +43,10 @@
 
 .margin5 {
     margin: 5%;
+}
+
+.marginLeft5 {
+    margin-left: 5%;
 }
 
 .marginHAuto {

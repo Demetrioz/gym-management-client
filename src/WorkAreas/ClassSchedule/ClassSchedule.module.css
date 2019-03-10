@@ -3,8 +3,8 @@
 }
 
 .classSchedule {
-    width: 70%;
-    height: 80%;
+    /* width: 70%;
+    height: 80%; */
     display: grid;
     justify-items: stretch;
     align-items: stretch;
