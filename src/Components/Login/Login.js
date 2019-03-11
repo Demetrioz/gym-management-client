@@ -26,7 +26,8 @@ class Login extends Component {
             //      Home/Dashboard for admin, Member portal for user
             //      Class login screen for service account
             
-            history.replace(route);
+            // TODO: history.push does not work in v4
+            history.push(route);
         }
         catch(error) {
             console.log("Error: ", error);

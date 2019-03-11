@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core';
 
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -8,6 +9,12 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import FormUtility from 'Utilities/FormUtility';
+
+const StyledSelect = withStyles({
+    selectMenu: {
+        minWidth: '150px',
+    }
+})(Select);
 
 class OutlinedSelect extends Component {
 
@@ -84,7 +91,7 @@ class OutlinedSelect extends Component {
                 <InputLabel>
                     {this.props.label}
                 </InputLabel>
-                <Select 
+                <StyledSelect 
                     value={value}
                     onChange={this.handleChange}
                     input={
@@ -95,7 +102,7 @@ class OutlinedSelect extends Component {
                     }
                 >
                     {selectOptions}
-                </Select>
+                </StyledSelect>
             </FormControl>
         )
     }
@@ -105,6 +112,7 @@ OutlinedSelect.defaultProps = {
     options: [],
     variant: 'outlined',
     margin: 'normal',
+    labelWidth: 10,
 }
 
 function mapStateToProps(state, ownProps) {

@@ -4,24 +4,41 @@
 
 .krav1 {
     background-color: yellow;
+    font-size: 12px;
+    display: flex;
 }
 
 .krav2 {
     background-color: orange;
+    font-size: 12px;
+    display: flex;
 }
 
 .krav3 {
     background-color: green;
+    font-size: 12px;
+    display: flex;
 }
 
 .fitness {
     background-color: cyan;
+    font-size: 12px;
+    display: flex;
 }
 
 .kickboxing {
     background-color: red;
+    font-size: 12px;
+    display: flex;
 }
 
 .mittWork {
     background-color: blue;
+    font-size: 12px;
+    display: flex;
+}
+
+.delete {
+    margin-left: auto;
+    cursor: pointer;
 }

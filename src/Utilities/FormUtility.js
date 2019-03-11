@@ -2,7 +2,8 @@ class FormUtility {
 
     static addNameToChildren(children, formName) {
         
-        let updatedChildren = children.map(child => {
+        let updatedChildren = Array.isArray(children)
+        ? children.map(child => {
             let props = {
                 ...child.props,
                 formName: formName,
@@ -11,7 +12,13 @@ class FormUtility {
             let newChild = {...child, props};
 
             return newChild;
-        });
+        })
+        : null;
+
+        if(updatedChildren === null) {
+            let props = { ...children.props, formName: formName }
+            updatedChildren = {...children, props};
+        }
 
         return updatedChildren;
     }

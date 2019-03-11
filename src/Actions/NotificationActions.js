@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 import Notification from 'Components/Notification/Notification';
 
@@ -10,6 +11,7 @@ class NotificationActions {
             name: name,
             component: 
                 <Notification
+                    key={moment().milliseconds()}
                     action={action}
                     message={message}
                 />

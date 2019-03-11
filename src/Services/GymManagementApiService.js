@@ -106,6 +106,10 @@ class GymManagementApiService {
     static async updateClassSchedule(schedule) {
         return await this.request('ClassSchedule', schedule, 'PATCH');
     }
+
+    static async deleteClassSchedule(id) {
+        return await this.request(`ClassSchedule/${id}`, null, 'POST');
+    }
 }
 
 export default GymManagementApiService;

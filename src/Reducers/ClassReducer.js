@@ -44,6 +44,20 @@ const ClassReducer = (classes = defaultState(), action) => {
             return newState;
         }
 
+        case 'REMOVE_CLASS_DATA': {
+            let property = action.property.split('.');
+            let newState = update(classes, {});
+
+            if(property.length === 1) {
+                newState = update(classes, {
+                    [property[0]]: {
+                        $splice: [[action.index, 1]]
+                    }
+                });
+            }
+
+            return newState;
+        }
         default: 
             return classes;
     }

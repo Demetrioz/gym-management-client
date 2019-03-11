@@ -20,6 +20,7 @@ class ScheduleGrid extends Component {
         super(props);
 
         this.createLayout = this.createLayout.bind(this);
+        this.removeItem = this.removeItem.bind(this);
 
         this.classColorMap = {
             'krav_maga_1': Style.krav1,
@@ -59,6 +60,45 @@ class ScheduleGrid extends Component {
         return layout;
     }
 
+    async removeItem(id) {
+
+        id = parseInt(id);
+
+        this.props.dispatch(NotificationActions.addNotification(
+            'Loading...',
+            'Deleting Class',
+            'class_loading_notification'
+        ));
+
+        try {
+            let index = -1;
+            for(let i = 0; i < this.props.classes.classSchedules.length; i++) {
+                if(this.props.classes.classSchedules[i].classScheduleId === id) {
+                    console.log("Im in");
+                    index = i;
+                    break;
+                }
+            }
+    
+            let response = await GymManagementApiService.deleteClassSchedule(id);
+    
+            if(response === true) {
+                this.props.dispatch({
+                    type: 'REMOVE_CLASS_DATA',
+                    property: 'classSchedules',
+                    index: index,
+                });
+            }
+        }
+        catch(error) {
+            console.log("Error:", error);
+        }
+        finally {
+            this.props.dispatch(NotificationActions.removeNotification(
+                'class_loading_notificaiton'));
+        }
+    }
+
     createClassSchedules(layout) {
         return layout.map(layoutObject => {
 
@@ -70,6 +110,12 @@ class ScheduleGrid extends Component {
                     key={layoutObject.i}
                 >
                     {layoutObject.classLabel}
+                    <span
+                        className={Style.delete}
+                        onClick={() => this.removeItem(layoutObject.i)}
+                    >
+                        x
+                    </span>
                 </div>
             )
         });

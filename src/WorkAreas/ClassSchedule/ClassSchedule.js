@@ -189,7 +189,7 @@ class ClassSchedule extends Component {
                     BeginTime: beginTime,
                     EndTime: endTime,
                     Created: schedule.created,
-                    IsDeleted: schedule.IsDeleted,
+                    IsDeleted: schedule.isDeleted,
                 }
 
                 updatedSchedules.push(newSchedule);
