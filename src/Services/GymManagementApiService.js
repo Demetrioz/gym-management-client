@@ -83,8 +83,20 @@ class GymManagementApiService {
 
     // Type Methods
 
+    static async getTypes() {
+        return await this.request('Type', null, 'GET');
+    }
+
     static async getTypesByCategory(category) {
         return await this.request(`Type/${category}`, null, 'GET');
+    }
+
+    static async createType(type) {
+        return await this.request('Type', type, 'POST');
+    }
+
+    static async updateTypes(types) {
+        return await this.request('Type', types, 'PATCH');
     }
 
     // Class Methods

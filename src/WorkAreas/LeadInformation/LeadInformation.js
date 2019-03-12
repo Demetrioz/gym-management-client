@@ -7,6 +7,7 @@ import DataTable from 'Components/DataTable/DataTable';
 import FloatingButton from 'Components/FloatingButton/FloatingButton';
 import ValueSummary from 'Components/ValueSummary/ValueSummary';
 import LeadForm from 'Components/LeadForm/LeadForm';
+import ContactForm from 'Components/ContactForm/ContactForm';
 
 import Add from'@material-ui/icons/Add';
 import People from '@material-ui/icons/People';
@@ -27,6 +28,7 @@ class LeadInformation extends Component {
         super(props);
 
         this.addLead = this.addLead.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     configureColumns() {
@@ -107,6 +109,13 @@ class LeadInformation extends Component {
     handleClick(event, props) {
         console.log("my event:", event);
         console.log("my props:", props);
+        let modal = {
+            name: 'edit_contact',
+            title: 'Edit Contact',
+            content: <ContactForm />,
+        };
+
+        this.props.dispatch(ModalActions.addModal(modal));
     }
 
     async componentDidMount() {

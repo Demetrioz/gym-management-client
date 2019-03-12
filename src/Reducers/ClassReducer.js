@@ -58,6 +58,22 @@ const ClassReducer = (classes = defaultState(), action) => {
 
             return newState;
         }
+
+        case 'SPLICE_CLASS_DATA': {
+            let property = action.property.split('.');
+            let newState = update(classes, {});
+
+            if(property.length === 1) {
+                newState = update(classes, {
+                    [property[0]]: {
+                        $splice: [[action.index, 1, action.data]]
+                    }
+                })
+            }
+
+            return newState
+        }
+
         default: 
             return classes;
     }
