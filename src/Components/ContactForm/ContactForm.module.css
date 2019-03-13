@@ -1,3 +1,36 @@
 .base {
     
 }
+
+.container {
+    border: solid black 1px;
+    border-radius: 10px;
+    margin: 8px;
+    padding: 8px;
+    min-width: 400px;
+}
+
+.contactLabel {
+    position: absolute;
+    top: 24px;
+    left: 25px;
+    background-color: white;
+}
+
+.statusLabel {
+    position: absolute;
+    top: 218px;
+    left: 25px;
+    background-color: white;
+}
+
+.generalLabel {
+    position: absolute;
+    top: 465px;
+    left: 25px;
+    background-color: white;
+}
+
+.paddingTop {
+    padding-top: 16px;
+}

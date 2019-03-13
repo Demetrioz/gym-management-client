@@ -27,6 +27,10 @@
 
 }
 
+.flexWrap {
+    flex-wrap: wrap;
+}
+
 /* Margin Styles */
 
 .margin1 {

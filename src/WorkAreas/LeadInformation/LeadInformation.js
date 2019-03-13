@@ -107,12 +107,12 @@ class LeadInformation extends Component {
     }
 
     handleClick(event, props) {
-        console.log("my event:", event);
-        console.log("my props:", props);
+        // console.log("my event:", event);
+        // console.log("my props:", props);
         let modal = {
             name: 'edit_contact',
             title: 'Edit Contact',
-            content: <ContactForm />,
+            content: <ContactForm contact={props}/>,
         };
 
         this.props.dispatch(ModalActions.addModal(modal));

@@ -94,6 +94,7 @@ class OutlinedSelect extends Component {
                 <StyledSelect 
                     value={value}
                     onChange={this.handleChange}
+                    disabled={this.props.disabled}
                     input={
                         <OutlinedInput
                             labelWidth={this.props.labelWidth}
@@ -113,6 +114,7 @@ OutlinedSelect.defaultProps = {
     variant: 'outlined',
     margin: 'normal',
     labelWidth: 10,
+    disabled: false,
 }
 
 function mapStateToProps(state, ownProps) {

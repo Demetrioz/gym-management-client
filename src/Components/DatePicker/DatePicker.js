@@ -8,6 +8,9 @@ import { DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
 
 import FormUtility from 'Utilities/FormUtility';
 
+import Common from 'Styles/Common.module.css';
+import Style from './DatePicker.module.css';
+
 const StyledDateTimePicker = withStyles({
     root: {
         marginTop: '3%',
@@ -56,13 +59,16 @@ class DatePicker extends Component {
         : moment();
 
         return (
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-                <StyledDateTimePicker 
-                    className={this.props.className}
-                    value={value}
-                    onChange={this.handleChange}
-                />
-            </MuiPickersUtilsProvider>
+            <div className={`${Common.flexRow} ${Style.base} ${this.props.className}`}>
+                <p className={Style.label}>{this.props.label}</p>
+                <MuiPickersUtilsProvider utils={MomentUtils}>
+                    <StyledDateTimePicker 
+                        className={this.props.className}
+                        value={value}
+                        onChange={this.handleChange}
+                    />
+                </MuiPickersUtilsProvider>
+            </div>
         )
     }
 }

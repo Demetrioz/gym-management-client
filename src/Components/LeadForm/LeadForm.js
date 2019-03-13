@@ -186,6 +186,7 @@ class LeadForm extends Component {
                         It's about X-o-clock. Would Y or Z work?
                     </Typography>
                     <DatePicker 
+                        className={Common.flexCenter}
                         name='appointment_date'
                     />
                     <Typography variant='body2' align='center'>
