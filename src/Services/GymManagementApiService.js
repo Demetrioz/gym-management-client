@@ -57,6 +57,10 @@ class GymManagementApiService {
         return await this.request('Contact', contact, 'POST');
     }
 
+    static async updateContact(contact) {
+        return await this.request('Contact', contact, 'PATCH');
+    }
+
     // Source Methods
 
     static async getSources() {

@@ -9,6 +9,7 @@ import DatePicker from 'Components/DatePicker/DatePicker';
 import FloatingButton from 'Components/FloatingButton/FloatingButton';
 
 import NotificationActions from 'Actions/NotificationActions';
+import ModalActions from 'Actions/ModalActions';
 
 import FormUtility from 'Utilities/FormUtility';
 
@@ -26,54 +27,94 @@ class ContactForm extends Component {
         this.handleSave = this.handleSave.bind(this);
     }
 
-    handleSave() {
-        // Build the new contact
-        // !! NOTE: 0 value doesn't seem to work with select, so adding 1 when
-        // creating options and subtracting 1 when saving
-        let firstName = FormUtility.getChildValue(this.props.contactForm, 'firstName')
-            ? FormUtility.getChildValue(this.props.contactForm, 'firstName')
-            : this.props.contact.firstName;
+    async handleSave() {
 
-        let lastName = FormUtility.getChildValue(this.props.contactForm, 'lastName')
-            ? FormUtility.getChildValue(this.props.contactForm, 'lastName')
-            : this.props.contact.lastName;
+        this.props.dispatch(NotificationActions.addNotification(
+            'Saving...',
+            'Saving Contacts',
+            'contact_saving_notification'
+        ));
 
-        let phone = FormUtility.getChildValue(this.props.contactForm, 'phone')
-            ? FormUtility.getChildValue(this.props.contactForm, 'phone')
-            : this.props.contact.phone;
+        try {
+            // Build the new contact
+            // !! NOTE: 0 value doesn't seem to work with select, so adding 1 when
+            // creating options and subtracting 1 when saving
+            let firstName = FormUtility.getChildValue(this.props.contactForm, 'firstName')
+                ? FormUtility.getChildValue(this.props.contactForm, 'firstName')
+                : this.props.contact.firstName;
 
-        let email = FormUtility.getChildValue(this.props.contactForm, 'email')
-            ? FormUtility.getChildValue(this.props.contactForm, 'email')
-            : this.props.contact.email;
+            let lastName = FormUtility.getChildValue(this.props.contactForm, 'lastName')
+                ? FormUtility.getChildValue(this.props.contactForm, 'lastName')
+                : this.props.contact.lastName;
 
-        let timesContacted = FormUtility.getChildValue(this.props.statusForm, 'timesContacted')
-            ? FormUtility.getChildValue(this.props.statusForm, 'timesContacted')
-            : this.props.contact.timesContacted;
+            let phone = FormUtility.getChildValue(this.props.contactForm, 'phone')
+                ? FormUtility.getChildValue(this.props.contactForm, 'phone')
+                : this.props.contact.phone;
 
-        let notes = FormUtility.getChildValue(this.props.generalForm, 'notes')
-            ? FormUtility.getChildValue(this.props.generalForm, 'notes')
-            : this.props.contact.leadNotes;
+            let email = FormUtility.getChildValue(this.props.contactForm, 'email')
+                ? FormUtility.getChildValue(this.props.contactForm, 'email')
+                : this.props.contact.email;
 
-        let updatedContact = {
-            ContactId: this.props.contact.contactId,
-            StatusId: FormUtility.getChildValue(this.props.statusForm, 'status') - 1,
-            SourceId: this.props.contact.sourceId,
-            InterestId: FormUtility.getChildValue(this.props.generalForm, 'interest') - 1,
-            FirstName: firstName,
-            LastName: lastName,
-            Phone: phone,
-            Email: email,
-            LastContact: FormUtility.getChildValue(this.props.statusForm, 'lastContact'),
-            TimesContacted: timesContacted,
-            Created: this.props.contact.created,
-            IsDeleted: this.props.contact.isDeleted,
-            LeadNotes: notes,
-            nextAppointment: FormUtility.getChildValue(this.props.statusForm, 'nextAppointment')
+            let timesContacted = FormUtility.getChildValue(this.props.statusForm, 'timesContacted')
+                ? FormUtility.getChildValue(this.props.statusForm, 'timesContacted')
+                : this.props.contact.timesContacted;
+
+            let notes = FormUtility.getChildValue(this.props.generalForm, 'notes')
+                ? FormUtility.getChildValue(this.props.generalForm, 'notes')
+                : this.props.contact.leadNotes;
+
+            let updatedContact = {
+                ContactId: this.props.contact.contactId,
+                StatusId: FormUtility.getChildValue(this.props.statusForm, 'status'),
+                SourceId: this.props.contact.sourceId,
+                InterestId: FormUtility.getChildValue(this.props.generalForm, 'interest'),
+                FirstName: firstName,
+                LastName: lastName,
+                Phone: phone,
+                Email: email,
+                LastContact: FormUtility.getChildValue(this.props.statusForm, 'lastContact'),
+                TimesContacted: timesContacted,
+                Created: this.props.contact.created,
+                IsDeleted: this.props.contact.isDeleted,
+                LeadNotes: notes,
+                nextAppointment: FormUtility.getChildValue(this.props.statusForm, 'nextAppointment')
+            }
+
+            let result = await GymManagementApiService.updateContact([updatedContact]);
+            
+            let index = -1
+            for(let i = 0; i < this.props.contacts.length; i++) {
+                if(this.props.contacts[i].contactId === result[0].contactId) {
+                    index = i;
+                    break;
+                }
+            }
+
+            let status = Enumerable
+                .from(this.props.statuses)
+                .where(s => s.statusId === result[0].statusId)
+                .firstOrDefault();
+
+            result[0].status = status;
+
+            // Update state
+            this.props.dispatch({
+                type: 'MERGE_CONTACT_DATA',
+                property: 'contacts',
+                index: index,
+                data: result[0]
+            });
+
+            // Close modal
+            this.props.dispatch(ModalActions.removeModal(this.props.name));
         }
-
-        console.log("updatedContact:", updatedContact);
-        // TODO: save to db
-        // TODO: update state
+        catch(error) {
+            console.log("Error:", error);
+        }
+        finally {
+            this.props.dispatch(NotificationActions.removeNotification(
+                'contact_saving_notificaiton'));
+        }
     }
 
     async componentDidMount() {
@@ -97,7 +138,7 @@ class ContactForm extends Component {
             // creating options and subtracting 1 when saving
             let sourceOptions = sources.map(source => {
                 return {
-                    value: source.sourceId + 1,
+                    value: source.sourceId,
                     label: source.label
                 }
             });
@@ -109,16 +150,22 @@ class ContactForm extends Component {
 
             let statusOptions = statuses.map(status => {
                 return {
-                    value: status.statusId + 1,
+                    value: status.statusId,
                     label: status.label
                 }
             });
 
             let interestOptions = interests.map(interest => {
                 return {
-                    value: interest.interestId + 1,
+                    value: interest.interestId,
                     label: interest.label
                 }
+            });
+
+            this.props.dispatch({
+                type: 'SET_CONTACT_DATA',
+                property: 'status',
+                data: statuses
             });
 
             this.props.dispatch({
@@ -197,7 +244,7 @@ class ContactForm extends Component {
                         <OutlinedSelect 
                             name='status'
                             label='Status'
-                            value={this.props.contact.statusId + 1}
+                            value={this.props.contact.statusId}
                         />
                         <Input
                             name='convertDate'
@@ -230,7 +277,7 @@ class ContactForm extends Component {
                             name='source'
                             label='Source'
                             disabled={true}
-                            value={this.props.contact.sourceId + 1}
+                            value={this.props.contact.sourceId}
                         />
                         <OutlinedSelect
                             name='interest'
@@ -262,6 +309,8 @@ function mapStateToProps(state) {
     let generalIndex = FormUtility.findFormIndexByName(state.forms, 'general_form');
 
     return {
+        contacts: state.contacts.contacts,
+        statuses: state.contacts.status,
         contactForm: state.forms[contactIndex],
         statusForm: state.forms[statusIndex],
         generalForm: state.forms[generalIndex],

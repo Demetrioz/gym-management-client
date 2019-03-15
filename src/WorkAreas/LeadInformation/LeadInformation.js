@@ -33,7 +33,7 @@ class LeadInformation extends Component {
 
     configureColumns() {
 
-        let columns = [
+        return [
             {
                 label: 'Name',
                 method: this.displayName,
@@ -55,8 +55,6 @@ class LeadInformation extends Component {
                 property: 'timesContacted',
             }
         ];
-
-        return columns;
     }
 
     displayName(data) {
@@ -107,12 +105,10 @@ class LeadInformation extends Component {
     }
 
     handleClick(event, props) {
-        // console.log("my event:", event);
-        // console.log("my props:", props);
         let modal = {
             name: 'edit_contact',
             title: 'Edit Contact',
-            content: <ContactForm contact={props}/>,
+            content: <ContactForm name='edit_contact' contact={props}/>,
         };
 
         this.props.dispatch(ModalActions.addModal(modal));
@@ -151,7 +147,7 @@ class LeadInformation extends Component {
 
         let leads = Enumerable
             .from(this.props.contacts)
-            .where(contact => contact.status.name === 'propsect')
+            .where(contact => contact.status.name === 'prospect')
             .toArray();
 
         let totalLeads = leads.length;

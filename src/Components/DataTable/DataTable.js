@@ -42,9 +42,10 @@ class DataTable extends Component {
 
     createDataRows() {
 
-        let rows = this.props.data.map(row => {
+        let rows = this.props.data.map((row, index) => {
             return (
                 <DataTableRow
+                    key={index}
                     onClick={this.props.onClick}
                     data={row}
                     columns={this.props.columns}
