@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import MediaQuery from 'react-responsive';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 
 import Form from 'Components/Form/Form';
 import Input from 'Components/Input/Input';
 import FloatingButton from 'Components/FloatingButton/FloatingButton';
 
 import DesktopLogo from 'Images/Logo/Logo_Desktop.png';
+
+import FormUtility from 'Utilities/FormUtility';
 
 import GymManagementApiService from 'Services/GymManagementApiService';
 
@@ -17,17 +20,28 @@ import Common from 'Styles/Common.module.css';
 
 class Login extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.handleLogin = this.handleLogin.bind(this);
+    }
+
     async handleLogin(history, route) {
         
         try {
 
-            // TODO: Hook into authentication
+            let credentials = {
+                user: FormUtility.getChildValue(this.props.form, 'email'),
+                password: FormUtility.getChildValue(this.props.form, 'password')
+            }
+
+            let result = await GymManagementApiService.login(credentials);
+            
             // TODO: Load different routes based on authenticated user
             //      Home/Dashboard for admin, Member portal for user
             //      Class login screen for service account
-            
-            // TODO: history.push does not work in v4
-            history.push(route);
+
+            //history.push(route);
         }
         catch(error) {
             console.log("Error: ", error);
@@ -39,7 +53,7 @@ class Login extends Component {
     }
 
     render () {
-
+        
         return (
             <React.Fragment>
 
@@ -128,4 +142,13 @@ class Login extends Component {
     }
 }
 
-export default Login;
+function mapStateToProps(state) {
+    
+    let index = FormUtility.findFormIndexByName(state.forms, 'login_form');
+
+    return {
+        form: state.forms[index],
+    }
+}
+
+export default withRouter(connect(mapStateToProps, null)(Login));

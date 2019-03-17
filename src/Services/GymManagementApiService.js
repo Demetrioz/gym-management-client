@@ -1,4 +1,5 @@
 import Settings from 'Settings';
+import JSEncrypt from 'jsencrypt';
 
 class GymManagementApiService {
 
@@ -40,8 +41,25 @@ class GymManagementApiService {
 
     // Login/Logout Methods
 
-    static async login(email, password) {
+    static async login(credentials) {
+        console.log("credentials:", credentials);
+        let key = await this.request('Auth/Key', null, 'POST');
+        console.log("key:", key);
+        
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey(key.publicKey);
+        let encryptedUser = encrypt.encrypt(credentials.user);
+        let encryptedPassword = encrypt.encrypt(credentials.password);
 
+        let encryptedCredentials = {
+            UserName: encryptedUser,
+            Password: encryptedPassword
+        };
+
+        console.log("encrypted user:", encryptedUser);
+        console.log("encrypted Pass:", encryptedPassword);
+
+        let token = await this.request('Auth/Token', encryptedCredentials, 'POST');
     }
 
     // Contact Methods
