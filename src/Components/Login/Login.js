@@ -31,17 +31,26 @@ class Login extends Component {
         try {
 
             let credentials = {
-                user: FormUtility.getChildValue(this.props.form, 'email'),
-                password: FormUtility.getChildValue(this.props.form, 'password')
+                UserName: FormUtility.getChildValue(this.props.form, 'email'),
+                Password: FormUtility.getChildValue(this.props.form, 'password')
             }
 
             let result = await GymManagementApiService.login(credentials);
+            console.log("result:", result);
             
             // TODO: Load different routes based on authenticated user
             //      Home/Dashboard for admin, Member portal for user
             //      Class login screen for service account
 
-            //history.push(route);
+            // TODO: result should be decoded - check for parts and dispatch to state
+            if(result) {
+                this.props.dispatch({
+                    type: 'SET_USER',
+                    data: result.token
+                });
+                
+                history.push(route);
+            }
         }
         catch(error) {
             console.log("Error: ", error);
