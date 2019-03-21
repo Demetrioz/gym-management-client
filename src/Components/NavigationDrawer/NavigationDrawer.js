@@ -11,18 +11,22 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 
+import NavigationArea from 'Components/NavigationArea/NavigationArea';
+
 // Collapse Panel Icons
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Dashboard from '@material-ui/icons/Dashboard';
 import Business from '@material-ui/icons/Business';
 import People from '@material-ui/icons/People';
-import Class from '@material-ui/icons/Class';
+import Build from '@material-ui/icons/Build';
 
 // Area Icons
 import Email from '@material-ui/icons/Email';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Schedule from '@material-ui/icons/Schedule';
+import Class from '@material-ui/icons/Class';
+import Settings from '@material-ui/icons/Settings';
 
 // Work Areas
 import DashboardWorkArea from 'WorkAreas/Dashboard/Dashboard';
@@ -52,13 +56,14 @@ class NavigationDrawer extends Component {
         this.state = {
             contact: false,
             schedule: false,
-            marketing: false,
             reports: false,
+            admin: false,
+            setup: false,
+            contactSetup: false,
         }
     }
 
     handleClick(clickedComponent, expandable) {
-
         let componentMap = {
             dashboard: DashboardWorkArea,
             email: EmailWorkArea,
@@ -92,13 +97,13 @@ class NavigationDrawer extends Component {
                     component='nav'
                     subheader={<ListSubHeader component='div'>Work Areas</ListSubHeader>}
                 >
-                    <ListItem button onClick={() => this.handleClick('dashboard', false)}>
-                        <ListItemIcon>
-                            <Dashboard />
-                        </ListItemIcon>
-                        <ListItemText inset primary='Dashboard' />
-                    </ListItem>
-
+                    <Divider />
+                    <NavigationArea
+                        onClick={this.handleClick.bind(this, 'dashboard', false)}
+                        icon={<Dashboard />}
+                        label='Dashboard'
+                        subArea={false}
+                    />
                     <Divider />
 
                     <ListItem button onClick={() => this.handleClick('contact', true)}>
@@ -114,18 +119,16 @@ class NavigationDrawer extends Component {
                     {/* Member Collapse Panel */}
                     <Collapse in={this.state.contact} timeout='auto' unmountOnExit>
                         <List component='div' disablePadding>
-                            <ListItem button onClick={() => this.handleClick('lead', false)}>
-                                <ListItemIcon>
-                                    <AccountCircle />
-                                </ListItemIcon>
-                                <ListItemText inset primary='Leads' />
-                            </ListItem>
-                            <ListItem button onClick={() => this.handleClick('member', false)}>
-                                <ListItemIcon>
-                                    <AccountCircle />
-                                </ListItemIcon>
-                                <ListItemText inset primary='Members' />
-                            </ListItem>
+                            <NavigationArea
+                                onClick={this.handleClick.bind(this, 'lead', false)}
+                                icon={<AccountCircle />}
+                                label='Leads'
+                            />
+                            <NavigationArea
+                                onClick={this.handleClick.bind(this, 'member', false)}
+                                icon={<AccountCircle />}
+                                label='Members'
+                            />
                         </List>
                     </Collapse>
 
@@ -144,41 +147,101 @@ class NavigationDrawer extends Component {
                     {/* Schedule Collapse Panel */}
                     <Collapse in={this.state.schedule} timeout='auto' unmountOnExit>
                         <List component='div' disablePadding>
-                            <ListItem button onClick={() => this.handleClick('classes', false)}>
-                                <ListItemIcon>
-                                    <Class />
-                                </ListItemIcon>
-                                <ListItemText inset primary='Classes' />
-                            </ListItem>
-                            <ListItem button onClick={() => this.handleClick('class_schedule', false)}>
-                                <ListItemIcon>
-                                    <Schedule />
-                                </ListItemIcon>
-                                <ListItemText inset primary='Class Schedule' />
-                            </ListItem>
+                            <NavigationArea
+                                onClick={this.handleClick.bind(this, 'classes', false)}
+                                icon={<Class />}
+                                label='Classes'
+                            />
+                            <NavigationArea
+                                onClick={this.handleClick.bind(this, 'class_schedule', false)}
+                                icon={<Schedule />}
+                                label='Class Schedule'
+                            />
                         </List>
                     </Collapse>
 
+                    <Divider />
 
-                    <ListItem button onClick={() => this.handleClick('marketing', true)}>
+                    <ListItem button onClick={() => this.handleClick('admin', true)}>
                         <ListItemIcon>
-                            <Business />
+                            <Build />
                         </ListItemIcon>
-                        <ListItemText inset primary='Marketing' />
-                        {this.state.marketing ? <ExpandLess /> : <ExpandMore />}
+                        <ListItemText inset primary='Admin' />
+                        {this.state.admin ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
 
                     <Divider />
 
-                    {/* Marketing Collapse Panel */}
-                    <Collapse in={this.state.marketing} timeout='auto' unmountOnExit>
+                    {/* Admin Collapse Panel */}
+                    <Collapse in={this.state.admin} timeout='auto' unmountOnExit>
                         <List component='div' disablePadding>
-                            <ListItem button onClick={() => this.handleClick('email', false)}>
+                            <ListItem button onClick={() => this.handleClick('setup', true)}>
                                 <ListItemIcon>
-                                    <Email />
+                                    <Settings />
                                 </ListItemIcon>
-                                <ListItemText inset primary='Email Integration' />
+                                <ListItemText inset primary='Setup' />
+                                {this.state.setup ? <ExpandLess /> : <ExpandMore />}
                             </ListItem>
+
+                            <Divider />
+
+                            {/* Setup Collapse Panel */}
+                            <Collapse in={this.state.setup} timeout='auto' unmountOnExit>
+                                <List component='div' disablePadding>
+                                    <ListItem button onClick={() => this.handleClick('contactSetup', true)}>
+                                        <ListItemIcon>
+                                            <Build />
+                                        </ListItemIcon>
+                                        <ListItemText inset primary='Contact' />
+                                        {this.state.contactSetup ? <ExpandLess /> : <ExpandMore />}
+                                    </ListItem>
+
+                                    <Divider />
+
+                                    {/* Contact Setup Collapse Panel */}
+                                    <Collapse in={this.state.contactSetup} timeout='auto' unmountOnExit>
+                                        <List component='div' disablePadding>
+                                            <NavigationArea
+                                                onClick={this.handleClick.bind(this, 'email', false)}
+                                                icon={<Email />}
+                                                label='Interests'
+                                            />
+                                            <NavigationArea
+                                                onClick={this.handleClick.bind(this, 'email', false)}
+                                                icon={<Email />}
+                                                label='Sources'
+                                            />
+                                            <NavigationArea
+                                                onClick={this.handleClick.bind(this, 'email', false)}
+                                                icon={<Email />}
+                                                label='Statuses'
+                                            />
+                                        </List>
+
+                                    </Collapse>
+
+                                    <Divider />
+
+                                    <NavigationArea
+                                        onClick={this.handleClick.bind(this, 'email', false)}
+                                        icon={<Email />}
+                                        label='Promotions'
+                                    />
+                                    <NavigationArea
+                                        onClick={this.handleClick.bind(this, 'email', false)}
+                                        icon={<Email />}
+                                        label='Locations'
+                                    />
+                                </List>
+                            </Collapse>
+
+                            <Divider />
+
+                            <NavigationArea
+                                onClick={this.handleClick.bind(this, 'email', false)}
+                                icon={<Email />}
+                                label='Email Integration'
+                            />
                         </List>
                     </Collapse>
 

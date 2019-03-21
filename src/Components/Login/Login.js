@@ -9,6 +9,9 @@ import FloatingButton from 'Components/FloatingButton/FloatingButton';
 
 import DesktopLogo from 'Images/Logo/Logo_Desktop.png';
 
+import ModalActions from 'Actions/ModalActions';
+import NotificationActions from 'Actions/NotificationActions';
+
 import FormUtility from 'Utilities/FormUtility';
 
 import GymManagementApiService from 'Services/GymManagementApiService';
@@ -27,6 +30,12 @@ class Login extends Component {
     }
 
     async handleLogin(history, route) {
+
+        this.props.dispatch(NotificationActions.addNotification(
+            'Loading...',
+            'Logging In',
+            'loading_notification'
+        ));
         
         try {
 
@@ -54,6 +63,10 @@ class Login extends Component {
         }
         catch(error) {
             console.log("Error: ", error);
+        }
+        finally {
+            this.props.dispatch(NotificationActions.removeNotification(
+                'loading_notification'));
         }
     }
     
