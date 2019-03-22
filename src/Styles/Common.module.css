@@ -16,6 +16,11 @@
     justify-content: center;
 }
 
+.flexBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
 .flexAround {
     display: flex;
     justify-content: space-around;
@@ -75,6 +80,10 @@
     margin-left: auto;
 }
 
+.marginTopSm {
+    margin-top: 16px;
+}
+
 /* Padding Styles */
 
 .padding1 {
@@ -82,6 +91,14 @@
 }
 
 /* Width Styles */
+
+.width40 {
+    width: 40%;
+}
+
+.width45 {
+    width: 45%;
+}
 
 .width50 {
     width: 50%;
