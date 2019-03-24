@@ -5,6 +5,7 @@ import ModalReducer from 'Reducers/ModalReducer';
 import FormReducer from 'Reducers/FormReducer';
 import NotificationReducer from 'Reducers/NotificationReducer';
 import ClassReducer from 'Reducers/ClassReducer';
+import AdminReducer from 'Reducers/AdminReducer';
 
 const RootReducer = (state = 0, action) => {
     let newState = {
@@ -15,6 +16,7 @@ const RootReducer = (state = 0, action) => {
         forms: FormReducer(state.forms, action),
         notifications: NotificationReducer(state.notifications, action),
         classes: ClassReducer(state.classes, action),
+        admin: AdminReducer(state.admin, action),
     }
 
     console.log(action);

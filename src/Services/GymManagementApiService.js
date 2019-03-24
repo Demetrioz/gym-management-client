@@ -115,6 +115,14 @@ class GymManagementApiService {
         return await this.request('Interest', null, 'GET');
     }
 
+    static async createInterests(interests) {
+        return await this.request('Interest', interests, 'POST');
+    }
+
+    static async updateInterests(interests) {
+        return await this.request('Interest', interests, 'PATCH');
+    }
+
     // Type Methods
 
     static async getTypes() {
