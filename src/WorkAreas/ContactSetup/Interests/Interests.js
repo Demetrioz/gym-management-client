@@ -58,7 +58,7 @@ class Interests extends Component {
 
     handleCancel() {
         this.setState({ 
-            showForm: false ,
+            showForm: false,
             selectedInterest: null,
             type: null
         });

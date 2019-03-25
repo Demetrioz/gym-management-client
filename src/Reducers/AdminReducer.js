@@ -9,6 +9,7 @@ const defaultState = () => {
         },
         promotions: [],
         locations: [],
+        types: [],
     }
 }
 

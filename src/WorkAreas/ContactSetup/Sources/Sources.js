@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Enumerable from 'linq';
 
 import DataTable from 'Components/DataTable/DataTable';
 import Form from 'Components/Form/Form';
-import Input from 'Components/Form/Form';
+import Input from 'Components/Input/Input';
+import OutlinedSelect from 'Components/OutlinedSelect/OutlinedSelect';
 import FloatingButton from 'Components/FloatingButton/FloatingButton';
 
 import NotificationActions from 'Actions/NotificationActions';
@@ -27,6 +29,8 @@ class Sources extends Component {
 
         this.handleAdd = this.handleAdd.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     configureColumns() {
@@ -54,6 +58,61 @@ class Sources extends Component {
         this.setState({ showForm: true });
     }
 
+    handleCancel() {
+        this.setState({
+            showForm: false,
+            selectedSource: null,
+            type: null
+        });
+    }
+
+    async handleSave() {
+        this.props.dispatch(NotificationActions.addNotification(
+            'Saving...',
+            'Saving Information',
+            'saving_notification'
+        ));
+
+        let typeId = FormUtility.getChildValue(this.props.form, 'type');
+        let name = FormUtility.getChildValue(this.props.form, 'name');
+        let label = FormUtility.getChildValue(this.props.form, 'label');
+        let description = FormUtility.getChildValue(this.props.form, 'description');
+
+        try {
+            if(this.state.type === 'edit') {
+
+            }
+            else {
+                let newSource = {
+                    TypeId: typeId,
+                    Name: name,
+                    Label: label,
+                    Description: description
+                }
+
+                let result = await GymManagementApiService.createSources([newSource]);
+
+                console.log("result:", result);
+
+                this.props.dispatch({
+                    type: 'ADMIN_PUSH_DATA',
+                    property: 'contacts.sources',
+                    data: result
+                });
+
+                this.setState({ showForm: false });
+            }
+        }
+        catch(error) {
+            // TODO: Error Modal
+            console.log("error:", error);
+        }
+        finally {
+            this.props.dispatch(NotificationActions.removeNotification(
+                'saving_notification'));
+        }
+    }
+
     async componentDidMount() {
         this.props.dispatch(NotificationActions.addNotification(
             'Loading...',
@@ -62,12 +121,22 @@ class Sources extends Component {
         ));
 
         try {
-            let sources = await GymManagementApiService.getSources();
+            let sourceRequest = GymManagementApiService.getSources();
+            let typeRequest = GymManagementApiService.getTypes();
+            
+            let sources = await sourceRequest;
+            let types = await typeRequest;
 
             this.props.dispatch({
                 type: 'ADMIN_SET_DATA',
                 property: 'contacts.sources',
                 data: sources,
+            });
+
+            this.props.dispatch({
+                type: 'ADMIN_SET_DATA',
+                property: 'types',
+                data: types,
             });
         }
         catch(error) {
@@ -84,7 +153,55 @@ class Sources extends Component {
 
         let columns = this.configureColumns();
 
-        let form = null;
+        let sourceTypes = Enumerable
+            .from(this.props.types)
+            .where(type => type.category === 'source')
+            .toArray();
+
+        let typeOptions = sourceTypes.map(type => {
+            return {
+                label: type.label,
+                value: type.typeId
+            }
+        });
+
+        let form = this.state.showForm
+            ?
+                <div id='form' className={Common.width45}>
+                    <Form name='source_form' className={Common.flexColumn}>
+                        <OutlinedSelect
+                            name='type'
+                            label='Type'
+                            options={typeOptions}
+                        />
+                        <Input 
+                            name='name'
+                            label='Name'
+                            // defaultValue={defaultName}
+                        />
+                        <Input
+                            name='label'
+                            label='Label'
+                            // defaultValue={defaultLabel}
+                        />
+                        <Input
+                            name='description'
+                            label='Description'
+                        />
+                    </Form>
+                    <div id='form_button' className={`${Common.flexCenter} ${Common.flexAround} ${Common.margin3}`}>
+                        <FloatingButton
+                            label='Cancel'
+                            color='secondary'
+                            onClick={this.handleCancel}
+                        />
+                        <FloatingButton
+                            label='Save'
+                            onClick={this.handleSave}
+                        />
+                    </div>
+                </div>
+            : null;
 
         return (
             <div id='container' className={`${Common.flexRow} ${Common.flexBetween} ${Common.marginTopSm}`}>
@@ -109,8 +226,13 @@ class Sources extends Component {
 }
 
 function mapStateToProps(state) {
+
+    let index = FormUtility.findFormIndexByName(state.forms, 'source_form');
+
     return {
         sources: state.admin.contacts.sources,
+        types: state.admin.types,
+        form: state.forms[index],
     }
 }
 

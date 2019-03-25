@@ -99,6 +99,14 @@ class GymManagementApiService {
         return await this.request('Source', null, 'GET');
     }
 
+    static async createSources(sources) {
+        return await this.request('Source', sources, 'POST');
+    }
+
+    static async updateSources(sources) {
+        return await this.request('Source', sources, 'PATCH');
+    }
+
     // Status Methods
 
     static async getStatuses() {
