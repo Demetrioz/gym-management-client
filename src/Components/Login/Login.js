@@ -9,7 +9,7 @@ import FloatingButton from 'Components/FloatingButton/FloatingButton';
 
 import DesktopLogo from 'Images/Logo/Logo_Desktop.png';
 
-import ModalActions from 'Actions/ModalActions';
+// import ModalActions from 'Actions/ModalActions';
 import NotificationActions from 'Actions/NotificationActions';
 
 import FormUtility from 'Utilities/FormUtility';

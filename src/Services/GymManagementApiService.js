@@ -1,6 +1,6 @@
 import Settings from 'Settings';
-import JSEncrypt from 'jsencrypt';
-import jwt_decode from 'jwt-decode';
+// import JSEncrypt from 'jsencrypt';
+// import jwt_decode from 'jwt-decode';
 
 class GymManagementApiService {
 
@@ -78,7 +78,7 @@ class GymManagementApiService {
 
     static async getContacts() {
 
-        let filter = ``;
+        // let filter = ``;
         //return await this.request('GetContacts', null, 'GET');
         return await this.request('Contact', null, 'GET');
     }
@@ -95,7 +95,7 @@ class GymManagementApiService {
 
     static async getSources() {
 
-        let filter = ``;
+        // let filter = ``;
         return await this.request('Source', null, 'GET');
     }
 
@@ -103,7 +103,7 @@ class GymManagementApiService {
 
     static async getStatuses() {
 
-        let filter = '';
+        // let filter = '';
         return await this.request('Status', null, 'GET');
     }
 
@@ -111,7 +111,7 @@ class GymManagementApiService {
     
     static async getInterests() {
 
-        let filter = '';
+        // let filter = '';
         return await this.request('Interest', null, 'GET');
     }
 

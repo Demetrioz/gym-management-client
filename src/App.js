@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Enumerable from 'linq';
 
 import Header from 'Components/Header/Header';
 import Login from 'Components/Login/Login';

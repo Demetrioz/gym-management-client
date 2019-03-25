@@ -12,7 +12,6 @@ import NavigationExpand from 'Components/NavigationExpand/NavigationExpand';
 
 // Collapse Panel Icons
 import Dashboard from '@material-ui/icons/Dashboard';
-import Business from '@material-ui/icons/Business';
 import People from '@material-ui/icons/People';
 import Build from '@material-ui/icons/Build';
 
@@ -31,8 +30,6 @@ import LeadInformation from 'WorkAreas/LeadInformation/LeadInformation';
 import Classes from 'WorkAreas/Classes/Classes';
 import ClassSchedule from 'WorkAreas/ClassSchedule/ClassSchedule';
 import ContactSetup from 'WorkAreas/ContactSetup/ContactSetup';
-
-import Style from './NavigationDrawer.module.css';
 
 const StyledDrawer = withStyles({
     paper: {

@@ -71,7 +71,7 @@ class LeadInformation extends Component {
         
         let count = 0;
         
-        if(users != undefined) {
+        if(users !== undefined) {
             users.forEach(user => {
                 if(this.getDaysSinceContact(user) > 3)
                     count++;
@@ -87,7 +87,7 @@ class LeadInformation extends Component {
 
         let leadsToday = Enumerable
             .from(users)
-            .where(user => moment(user.created).date() == now)
+            .where(user => moment(user.created).date() === now)
             .toArray();
         
         return leadsToday.length;

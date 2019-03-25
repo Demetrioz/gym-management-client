@@ -5,8 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import Close from '@material-ui/icons/Close';
-
 // TODO: Figure out how to make modal width variable
 // TODO: Don't close on click
 

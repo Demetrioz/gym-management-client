@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import MediaQuery from 'react-responsive';
+// import { connect } from 'react-redux';
+// import MediaQuery from 'react-responsive';
 
 import NavigationDrawer from 'Components/NavigationDrawer/NavigationDrawer';
 import Content from 'Components/Content/Content';

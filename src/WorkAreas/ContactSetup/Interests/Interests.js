@@ -13,7 +13,6 @@ import FormUtility from 'Utilities/FormUtility';
 import GymManagementApiService from 'Services/GymManagementApiService';
 
 import Common from 'Styles/Common.module.css';
-import Style from './Interests.module.css';
 
 class Interests extends Component {
 
@@ -174,6 +173,7 @@ class Interests extends Component {
             ? this.state.selectedInterest.label
             : null;
 
+        // TODO: name cannot be edited after creation
         let form = this.state.showForm
             ?
                 <div id='form' className={Common.width45}>
