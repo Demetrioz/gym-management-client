@@ -120,7 +120,7 @@ class MemberInformation extends Component {
                 </div>
                 <div id='lead_table'>
                     <DataTable
-                        styleHeader={true}
+                        styledHeader={true}
                         columns={columns}
                         data={members}
                         onClick={this.handleClick}

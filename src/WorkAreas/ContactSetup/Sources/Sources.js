@@ -15,6 +15,8 @@ import FormUtility from 'Utilities/FormUtility';
 import GymManagementApiService from 'Services/GymManagementApiService';
 
 import Common from 'Styles/Common.module.css';
+import Add from '@material-ui/icons/Add';
+import Save from '@material-ui/icons/Save';
 
 class Sources extends Component {
 
@@ -50,8 +52,12 @@ class Sources extends Component {
         ];
     }
 
-    handleClick() {
-
+    handleClick(event, props) {
+        this.setState({
+            showForm: true,
+            selectedSource: props,
+            type: 'edit'
+        });
     }
 
     handleAdd() {
@@ -73,14 +79,63 @@ class Sources extends Component {
             'saving_notification'
         ));
 
-        let typeId = FormUtility.getChildValue(this.props.form, 'type');
-        let name = FormUtility.getChildValue(this.props.form, 'name');
-        let label = FormUtility.getChildValue(this.props.form, 'label');
-        let description = FormUtility.getChildValue(this.props.form, 'description');
+        let typeId = FormUtility.getChildValue(this.props.form, 'type')
+            ? FormUtility.getChildValue(this.props.form, 'type')
+            : this.state.selectedSource.typeId;
+
+        let name = FormUtility.getChildValue(this.props.form, 'name')
+            ? FormUtility.getChildValue(this.props.form, 'name')
+            : this.state.selectedSource.name;
+
+        let label = FormUtility.getChildValue(this.props.form, 'label')
+            ? FormUtility.getChildValue(this.props.form, 'label')
+            : this.state.selectedSource.label;
+
+        let description = FormUtility.getChildValue(this.props.form, 'description')
+            ? FormUtility.getChildValue(this.props.form, 'description')
+            : this.state.selectedSource.description;
 
         try {
             if(this.state.type === 'edit') {
+                let updatedSource = {
+                    SourceId: this.state.selectedSource.sourceId,
+                    TypeId: typeId,
+                    Name: name,
+                    Label: label,
+                    Description: description,
+                    Created: this.state.selectedSource.created,
+                    IsDeleted: this.state.selectedSource.isDeleted
+                }
 
+                let result = await GymManagementApiService.updateSources([updatedSource]);
+
+                let index = -1;
+                for(let i = 0; i < this.props.sources.length; i++) {
+                    if(this.props.sources[i].sourceId === result[0].sourceId) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                let type = Enumerable
+                    .from(this.props.types)
+                    .where(t => t.typeId === result[0].typeId)
+                    .firstOrDefault();
+
+                result[0].type = type;
+
+                this.props.dispatch({
+                    type: 'ADMIN_SPLICE_DATA',
+                    property: 'contacts.sources',
+                    index: index,
+                    data: result[0]
+                });
+
+                this.setState({
+                    showForm: false,
+                    selectedSource: null,
+                    type: null
+                });
             }
             else {
                 let newSource = {
@@ -165,6 +220,22 @@ class Sources extends Component {
             }
         });
 
+        let defaultType = this.state.selectedSource
+            ? this.state.selectedSource.typeId
+            : null;
+
+        let defaultName = this.state.selectedSource
+            ? this.state.selectedSource.name
+            : null;
+
+        let defaultLabel = this.state.selectedSource
+            ? this.state.selectedSource.label
+            : null;
+
+        let defaultDescription = this.state.selectedSource
+            ? this.state.selectedSource.description
+            : null;
+
         let form = this.state.showForm
             ?
                 <div id='form' className={Common.width45}>
@@ -173,20 +244,22 @@ class Sources extends Component {
                             name='type'
                             label='Type'
                             options={typeOptions}
+                            value={defaultType}
                         />
                         <Input 
                             name='name'
                             label='Name'
-                            // defaultValue={defaultName}
+                            defaultValue={defaultName}
                         />
                         <Input
                             name='label'
                             label='Label'
-                            // defaultValue={defaultLabel}
+                            defaultValue={defaultLabel}
                         />
                         <Input
                             name='description'
                             label='Description'
+                            defaultValue={defaultDescription}
                         />
                     </Form>
                     <div id='form_button' className={`${Common.flexCenter} ${Common.flexAround} ${Common.margin3}`}>
@@ -197,6 +270,7 @@ class Sources extends Component {
                         />
                         <FloatingButton
                             label='Save'
+                            icon={<Save />}
                             onClick={this.handleSave}
                         />
                     </div>
@@ -215,6 +289,7 @@ class Sources extends Component {
                     <div id='table_button' className={`${Common.margin3} ${Common.marginLeftAuto}`}>
                         <FloatingButton  
                             label='Add'
+                            icon={<Add />}
                             onClick={this.handleAdd}
                         />
                     </div>

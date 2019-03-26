@@ -13,6 +13,8 @@ import FormUtility from 'Utilities/FormUtility';
 import GymManagementApiService from 'Services/GymManagementApiService';
 
 import Common from 'Styles/Common.module.css';
+import Add from '@material-ui/icons/Add';
+import Save from '@material-ui/icons/Save';
 
 class Interests extends Component {
 
@@ -197,6 +199,7 @@ class Interests extends Component {
                         />
                         <FloatingButton
                             label='Save'
+                            icon={<Save />}
                             onClick={this.handleSave}
                         />
                     </div>
@@ -215,6 +218,7 @@ class Interests extends Component {
                     <div id='table_button' className={`${Common.margin3} ${Common.marginLeftAuto}`}>
                         <FloatingButton  
                             label='Add'
+                            icon={<Add />}
                             onClick={this.handleAdd}
                         />
                     </div>

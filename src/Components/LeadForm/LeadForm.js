@@ -44,7 +44,7 @@ class LeadForm extends Component {
 
             let leadStatus = Enumerable
                 .from(statuses)
-                .where(status => status.name === 'propsect')
+                .where(status => status.name === 'prospect')
                 .firstOrDefault();
     
             let name = FormUtility.getChildValue(this.props.form, 'name');

@@ -37,8 +37,6 @@ class ContactForm extends Component {
 
         try {
             // Build the new contact
-            // !! NOTE: 0 value doesn't seem to work with select, so adding 1 when
-            // creating options and subtracting 1 when saving
             let firstName = FormUtility.getChildValue(this.props.contactForm, 'firstName')
                 ? FormUtility.getChildValue(this.props.contactForm, 'firstName')
                 : this.props.contact.firstName;

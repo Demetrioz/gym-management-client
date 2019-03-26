@@ -21,6 +21,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Schedule from '@material-ui/icons/Schedule';
 import Class from '@material-ui/icons/Class';
 import Settings from '@material-ui/icons/Settings';
+import MonetizationOn from '@material-ui/icons/MonetizationOn';
+import Business from '@material-ui/icons/Business';
 
 // Work Areas
 import DashboardWorkArea from 'WorkAreas/Dashboard/Dashboard';
@@ -126,18 +128,18 @@ class NavigationDrawer extends Component {
                         >
                             <NavigationArea
                                 onClick={this.handleClick.bind(this, 'contact_setup')}
-                                icon={<Email />}
+                                icon={<People />}
                                 label='Contact'
                             />
 
                             <NavigationArea
                                 onClick={this.handleClick.bind(this, 'email')}
-                                icon={<Email />}
+                                icon={<MonetizationOn />}
                                 label='Promotions'
                             />
                             <NavigationArea
                                 onClick={this.handleClick.bind(this, 'email')}
-                                icon={<Email />}
+                                icon={<Business />}
                                 label='Locations'
                             />
 

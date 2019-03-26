@@ -32,17 +32,33 @@ class DataTableRow extends Component {
 
         return this.props.columns.map((column, i) => {
 
-            return this.props.styledHeader
-            ? this.props.data !== undefined
-                ? column.method === undefined
-                    ? <StyledTableCell key={i}>{this.props.data[column.property]}</StyledTableCell>
-                    : <StyledTableCell key={i}>{column.method(this.props.data)}</StyledTableCell>
-                : <StyledTableCell key={i}>{column.label}</StyledTableCell>
-            : this.props.data !== undefined
-                ? column.method === undefined
-                    ? <TableCell key={i}>{this.props.data[column.property]}</TableCell>
-                    : <TableCell key={i}>{column.method(this.props.data)}</TableCell>
-                : <TableCell key={i}>{column.label}</TableCell>
+            let property = column.property
+                ? column.property.split('.')
+                : null;
+
+            let propertyMap = this.props.data && property
+                ? 
+                    {
+                        1: this.props.data[property[0]],
+                        2: this.props.data[property[0]][property[1]]
+                    }
+                : null;
+            
+            let propertyValue = property && propertyMap
+                ? propertyMap[property.length]
+                : null;
+
+                return this.props.styledHeader
+                ? this.props.data !== undefined
+                    ? column.method === undefined
+                        ? <StyledTableCell key={i}>{propertyValue}</StyledTableCell>
+                        : <StyledTableCell key={i}>{column.method(this.props.data)}</StyledTableCell>
+                    : <StyledTableCell key={i}>{column.label}</StyledTableCell>
+                : this.props.data !== undefined
+                    ? column.method === undefined
+                        ? <TableCell key={i}>{propertyValue}</TableCell>
+                        : <TableCell key={i}>{column.method(this.props.data)}</TableCell>
+                    : <TableCell key={i}>{column.label}</TableCell>
         });
     }
 
