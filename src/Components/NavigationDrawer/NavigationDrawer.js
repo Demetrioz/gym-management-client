@@ -23,6 +23,7 @@ import Class from '@material-ui/icons/Class';
 import Settings from '@material-ui/icons/Settings';
 import MonetizationOn from '@material-ui/icons/MonetizationOn';
 import Business from '@material-ui/icons/Business';
+import TrendingUp from '@material-ui/icons/TrendingUp';
 
 // Work Areas
 import DashboardWorkArea from 'WorkAreas/Dashboard/Dashboard';
@@ -32,6 +33,7 @@ import LeadInformation from 'WorkAreas/LeadInformation/LeadInformation';
 import Classes from 'WorkAreas/Classes/Classes';
 import ClassSchedule from 'WorkAreas/ClassSchedule/ClassSchedule';
 import ContactSetup from 'WorkAreas/ContactSetup/ContactSetup';
+import ContactManagement from 'WorkAreas/Mailchimp/ContactManagement/ContactManagement';
 
 const StyledDrawer = withStyles({
     paper: {
@@ -52,6 +54,7 @@ class NavigationDrawer extends Component {
             classes: Classes,
             class_schedule: ClassSchedule,
             contact_setup: ContactSetup,
+            contact_management: ContactManagement,
         };
 
         this.props.dispatch({
@@ -147,11 +150,23 @@ class NavigationDrawer extends Component {
 
                         <Divider />
 
-                        <NavigationArea
-                            onClick={this.handleClick.bind(this, 'email')}
+                        <NavigationExpand
                             icon={<Email />}
-                            label='Email Integration'
-                        />
+                            label='Mailchimp'
+                            subArea={true}
+                        >
+                            <NavigationArea
+                                onClick={this.handleClick.bind(this, 'contact_management')}
+                                icon={<People />}
+                                label='Contact Management'
+                            />
+                            <NavigationArea
+                                onClick={this.handleClick.bind(this, 'email')}
+                                icon={<TrendingUp />}
+                                label='Reports'
+                            />
+                        </NavigationExpand>
+
                     </NavigationExpand>
 
                     <Divider />

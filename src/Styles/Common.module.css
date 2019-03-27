@@ -76,12 +76,16 @@
     margin-top: auto;
 }
 
+.marginTopSm {
+    margin-top: 16px;
+}
+
 .marginLeftAuto {
     margin-left: auto;
 }
 
-.marginTopSm {
-    margin-top: 16px;
+.marginBottomSm {
+    margin-bottom: 16px;
 }
 
 /* Padding Styles */
