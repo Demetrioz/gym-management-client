@@ -58,8 +58,24 @@
     margin-left: 5%;
 }
 
+.marginLeftSm {
+    margin-left: 16px;
+}
+
+.marginLeftAuto {
+    margin-left: auto;
+}
+
+.marginTopAuto {
+    margin-top: auto;
+}
+
 .marginTop20 {
     margin-top: 20%;
+}
+
+.marginTopSm {
+    margin-top: 16px;
 }
 
 .marginHAuto {
@@ -70,18 +86,6 @@
 .marginVAuto {
     margin-top: auto;
     margin-bottom: auto;
-}
-
-.marginTopAuto {
-    margin-top: auto;
-}
-
-.marginTopSm {
-    margin-top: 16px;
-}
-
-.marginLeftAuto {
-    margin-left: auto;
 }
 
 .marginBottomSm {

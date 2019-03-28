@@ -5,9 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import Setup from 'WorkAreas/Mailchimp/ContactManagement/Setup/Setup';
-import Organization from 'WorkAreas/Mailchimp/ContactManagement/Organization/Organization';
-import ImportExport from 'WorkAreas/Mailchimp/ContactManagement/ImportExport';
+import DataTable from 'Components/DataTable/DataTable';
 
 const StyledPaper = withStyles({
     root: {
@@ -15,22 +13,34 @@ const StyledPaper = withStyles({
     }
 })(Paper);
 
-class ContactManagmenet extends Component {
+class Groups extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            tab: 0
-        }
-
-        this.contentMap = {
-            0: Setup,
-            1: Organization,
-            2: ImportExport,
+            tab: 0,
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.filterData = this.filterData.bind(this);
+    }
+
+    configureColumns() {
+        return [
+            {
+                label: 'Name',
+                property: 'name'
+            },
+            {
+                label: 'Members',
+                property: 'subscriber_count'
+            }
+        ];
+    }
+
+    filterData() {
+        return [];
     }
 
     handleChange(event, value) {
@@ -39,7 +49,9 @@ class ContactManagmenet extends Component {
 
     render() {
 
-        let content = React.createElement(this.contentMap[this.state.tab]);
+        let columns = this.configureColumns();
+
+        let data = this.filterData();
 
         return (
             <div id='container'>
@@ -51,15 +63,19 @@ class ContactManagmenet extends Component {
                         textColor='primary'
                         centered
                     >
-                        <Tab label='Setup' />
-                        <Tab label='Organization' />
-                        <Tab label='Import / Export' />
+                        <Tab label='Group 1' />
+                        <Tab label='Group 2' />
+                        <Tab label='Group 3' />
                     </Tabs>
+                    <DataTable
+                        styledHeader={true}
+                        columns={columns}
+                        data={data}
+                    />
                 </StyledPaper>
-                {content}
             </div>
         )
     }
 }
 
-export default ContactManagmenet;
+export default Groups;
