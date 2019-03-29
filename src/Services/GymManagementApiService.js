@@ -172,6 +172,12 @@ class GymManagementApiService {
     static async deleteClassSchedule(id) {
         return await this.request(`ClassSchedule/${id}`, null, 'POST');
     }
+
+    // Mailchimp Methods
+
+    static async getMailchimpLists() {
+        return await this.request('Mailchimp/List', null, 'GET');
+    }
 }
 
 export default GymManagementApiService;

@@ -10,6 +10,9 @@ const defaultState = () => {
         promotions: [],
         locations: [],
         types: [],
+        mailchimp: {
+            lists: [],
+        }
     }
 }
 

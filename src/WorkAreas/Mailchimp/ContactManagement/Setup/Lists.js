@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 
 import DataTable from 'Components/DataTable/DataTable';
 
+import NotificationActions from 'Actions/NotificationActions';
+
+import GymManagementApiService from 'Services/GymManagementApiService';
+
 class Lists extends Component {
 
     configureColumns() {
@@ -17,9 +21,34 @@ class Lists extends Component {
             },
             {
                 label: 'Members',
-                property: 'status.member_count'
+                property: 'stats.member_count'
             }
         ];
+    }
+
+    async componentDidMount() {
+        this.props.dispatch(NotificationActions.addNotification(
+            'Loading...',
+            'Loading Information',
+            'loading_notification'
+        ));
+
+        try {
+            let response = await GymManagementApiService.getMailchimpLists();
+
+            this.props.dispatch({
+                type: 'ADMIN_SET_DATA',
+                property: 'mailchimp.lists',
+                data: response.data.lists
+            });
+        }
+        catch(error) {
+            console.log("Error loading lists:", error);
+        }
+        finally {
+            this.props.dispatch(NotificationActions.removeNotification(
+                'loading_notificaiton'));
+        }
     }
 
     render() {
@@ -31,11 +60,17 @@ class Lists extends Component {
                 <DataTable
                     styledHeader={true}
                     columns={columns}
-                    data={[]}
+                    data={this.props.lists}
                 />
             </div>
         )
     }
 }
 
-export default connect(null,null)(Lists);
+function mapStateToProps(state) {
+    return {
+        lists: state.admin.mailchimp.lists,
+    }
+}
+
+export default connect(mapStateToProps, null)(Lists);
