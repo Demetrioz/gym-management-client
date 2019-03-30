@@ -12,6 +12,9 @@ const defaultState = () => {
         types: [],
         mailchimp: {
             lists: [],
+            groups: [],
+            tags: [],
+            segments: [],
         }
     }
 }

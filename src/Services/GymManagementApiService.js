@@ -178,6 +178,10 @@ class GymManagementApiService {
     static async getMailchimpLists() {
         return await this.request('Mailchimp/List', null, 'GET');
     }
+
+    static async getMailchimpGroups(listId) {
+        return await this.request(`Mailchimp/List/${listId}/Groups`, null, 'GET');
+    }
 }
 
 export default GymManagementApiService;
