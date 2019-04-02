@@ -81,7 +81,11 @@ class Groups extends Component {
     }
 
     filterData() {
-        return [];
+        let groups = this.props.groups[this.state.tab];
+
+        return groups !== null && groups !== undefined
+            ? groups.interests
+            : [];
     }
 
     handleChange(event, value) {

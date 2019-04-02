@@ -45,17 +45,15 @@ class Login extends Component {
             }
 
             let result = await GymManagementApiService.login(credentials);
-            console.log("result:", result);
             
             // TODO: Load different routes based on authenticated user
             //      Home/Dashboard for admin, Member portal for user
             //      Class login screen for service account
 
-            // TODO: result should be decoded - check for parts and dispatch to state
             if(result) {
                 this.props.dispatch({
                     type: 'SET_USER',
-                    data: result.token
+                    data: result
                 });
                 
                 history.push(route);
