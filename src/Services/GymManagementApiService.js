@@ -174,8 +174,16 @@ class GymManagementApiService {
         return await this.request('Mailchimp/List', null, 'GET');
     }
 
+    static async addUserToList(listId, memberObject) {
+        return await this.request(`Mailchimp/List/${listId}/Members`, memberObject, 'POST');
+    }
+
     static async getMailchimpGroups(listId) {
         return await this.request(`Mailchimp/List/${listId}/Groups`, null, 'GET');
+    }
+
+    static async getMailchimpSegments(listId) {
+        return await this.request(`Mailchimp/List/${listId}/Segments`, null, 'GET');
     }
 }
 

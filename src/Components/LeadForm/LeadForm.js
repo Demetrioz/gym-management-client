@@ -40,6 +40,7 @@ class LeadForm extends Component {
 
         try {
 
+            // Add user to db
             let statuses = await GymManagementApiService.getStatuses();
 
             let leadStatus = Enumerable
@@ -53,14 +54,17 @@ class LeadForm extends Component {
             let appointment = moment(FormUtility.getChildValue(this.props.form, 'appointment_date'))
                 .format('YYYY-MM-DD HH:mm:ss');
 
+            let email = FormUtility.getChildValue(this.props.form, 'email');
+            let interestId = FormUtility.getChildValue(this.props.form, 'goals');
+
             let newContact = {
                 StatusId: leadStatus.statusId,
                 SourceId: FormUtility.getChildValue(this.props.form, 'source'),
-                InterestId: FormUtility.getChildValue(this.props.form, 'goals'),
+                InterestId: interestId,
                 FirstName: name[0],
                 LastName: name[1],
                 Phone: FormUtility.getChildValue(this.props.form, 'phone'),
-                Email: FormUtility.getChildValue(this.props.form, 'email'),
+                Email: email,
                 LastContact: moment().format('YYYY-MM-DD HH:mm:ss'),
                 LeadNotes: FormUtility.getChildValue(this.props.form, 'notes'),
                 NextAppointment: appointment
@@ -76,6 +80,28 @@ class LeadForm extends Component {
                 property: 'contacts',
                 data: result[0]
             });
+
+            // Add user to mailchimp lists
+            if(email !== null && email !== '') {
+
+                let listResponse = await GymManagementApiService.getMailchimpLists();
+
+                let list = listResponse.data.lists.firstOrDefault();
+
+                let interest = Enumerable
+                    .from(this.props.interests)
+                    .where(i => i.interestId === interestId)
+                    .firstOrDefault();
+
+                // TODO: Add tags based on provided information
+
+                let listMember = {
+                    Email: email,
+                    Interest:  interest.Label
+                }
+
+                await GymManagementApiService.addUserToList(list.id, listMember);
+            }
 
             this.props.dispatch(ModalActions.removeModal('add_user_modal'));
         }
@@ -102,6 +128,12 @@ class LeadForm extends Component {
 
             let sources = await sourceRequest;
             let interests = await interestRequest;
+
+            this.props.dispatch({
+                type: 'APP_SET_DATA',
+                property: 'interests',
+                data: interests,
+            });
 
             let sourceOptions = sources.map(source => {
                 return {
@@ -217,6 +249,7 @@ function mapStateToProps(state) {
 
     return {
         sources: state.app.sources,
+        interests: state.app.interests,
         form: state.forms[formIndex],
     }
 }

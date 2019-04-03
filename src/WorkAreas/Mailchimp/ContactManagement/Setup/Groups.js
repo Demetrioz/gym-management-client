@@ -111,7 +111,7 @@ class Groups extends Component {
 
             this.props.dispatch({
                 type: 'UPDATE_FORM_CHILD',
-                formName: 'list_select_form',
+                formName: 'group_list_select_form',
                 childName: 'list',
                 properties: {
                     options: listOptions
@@ -119,7 +119,7 @@ class Groups extends Component {
             });
         }
         catch(error) {
-
+            console.log("Error:", error);
         }
         finally {
             this.props.dispatch(NotificationActions.removeNotification(
@@ -173,8 +173,8 @@ class Groups extends Component {
         return (
             <div id='container'>
                 <StyledPaper>
-                    <div id='list select' className={`${Common.flexCenter}`}>
-                        <Form name='list_select_form'>
+                    <div id='list_select' className={`${Common.flexCenter}`}>
+                        <Form name='group_list_select_form'>
                             <OutlinedSelect
                                 name='list'
                                 label='List'
