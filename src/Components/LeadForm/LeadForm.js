@@ -93,11 +93,12 @@ class LeadForm extends Component {
                     .where(i => i.interestId === interestId)
                     .firstOrDefault();
 
-                // TODO: Add tags based on provided information
-
                 let listMember = {
                     Email: email,
-                    Interest:  interest.Label
+                    Interest:  interest.Label,
+                    FirstName: name[0],
+                    LastName: name[1],
+                    Tags: ['Prospect'],
                 }
 
                 await GymManagementApiService.addUserToList(list.id, listMember);
