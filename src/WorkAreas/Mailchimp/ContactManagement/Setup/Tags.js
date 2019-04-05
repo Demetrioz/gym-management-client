@@ -113,7 +113,7 @@ class Tags extends Component {
     componentWillUnmount() {
         this.props.dispatch({
             type: 'ADMIN_SET_DATA',
-            property: 'mailchimp.segments',
+            property: 'mailchimp.tags',
             data: [],
         });
     }

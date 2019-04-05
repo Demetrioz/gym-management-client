@@ -51,6 +51,14 @@ class Lists extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.dispatch({
+            type: 'ADMIN_SET_DATA',
+            property: 'mailchimp.lists',
+            data: []
+        });
+    }
+
     render() {
 
         let columns = this.configureColumns();
