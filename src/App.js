@@ -35,7 +35,7 @@ class App extends Component {
                 <BrowserRouter >
                     <div>
                         <Header
-                            //user={this.props.user}
+                            user={this.props.user ? this.props.user.User : null}
                             title='Gym Management'
                         />
                         <Switch>

@@ -8,6 +8,7 @@ import Input from 'Components/Input/Input';
 import FloatingButton from 'Components/FloatingButton/FloatingButton';
 
 import DesktopLogo from 'Images/Logo/Logo_Desktop.png';
+//import KravWod from 'Images/Logo/desktop.png';
 
 // import ModalActions from 'Actions/ModalActions';
 import NotificationActions from 'Actions/NotificationActions';
@@ -50,7 +51,7 @@ class Login extends Component {
             //      Home/Dashboard for admin, Member portal for user
             //      Class login screen for service account
 
-            if(result) {
+            if(result.User) {
                 this.props.dispatch({
                     type: 'SET_USER',
                     data: result
