@@ -1,0 +1,4 @@
+.base {
+    /* Don't hide the app bar */
+    margin-top: 64px;
+}
